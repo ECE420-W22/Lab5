@@ -1,0 +1,4 @@
+val data = sc.textFile("data_input")
+val pairs = data.map(data => data.split("\t"))
+val counts1 = (pairs.map(x => (x(1),x(0))).++(pairs.map(x => (x(0),x(1))))).groupByKey() 
+val result = counts1.map(x => (x._1, x._2.toList.sortBy(x => x).distinct))

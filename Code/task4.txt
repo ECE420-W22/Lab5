@@ -1,0 +1,9 @@
+val data = sc.textFile("data_input")
+val pairs = data.map(data => data.split("\t"))
+val counts1 = pairs.map(x => (x(0),x(1))).groupByKey() 
+val neighbors = counts1.map(x => (x._1, x._2.toList.sortBy(x => x).distinct)).collectAsMap()
+
+val hops = pairs.map(x => (x(0), neighbors.getOrElse(x(1), List[String]()) :+ x(1)))
+val result = hops.flatMap { 
+  case (key, value) => value.map(v => (key, v))
+}.distinct
